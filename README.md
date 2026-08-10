@@ -14,3 +14,15 @@ Remember, it's self-paced so feel free to take a break! ☕️
 
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
 
+## Custom prompt available
+
+This workspace includes a GitHub Copilot prompt file in `.github/prompts/createCobolTestPlan.prompt.md`.
+
+To use it in Agent Mode, type:
+
+```prompt
+/createCobolTestPlan
+```
+
+It generates a Markdown test plan for the current COBOL accounting app and saves it to `docs/TESTPLAN.md`.
+

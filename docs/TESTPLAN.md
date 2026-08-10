@@ -1,0 +1,20 @@
+# COBOL Application Test Plan
+
+This test plan covers the current business logic and implementation of the COBOL accounting application in this repository.
+
+> Note: The current application uses `DataProgram` working storage to hold the balance. That means balance changes persist only within the running program session and are not saved to an external file or database.
+>
+> This test plan is built around the current in-memory behavior and should be validated with stakeholders before migrating to a Node.js app.
+
+| Test Case ID | Test Case Description | Pre-conditions | Test Steps | Expected Result | Actual Result | Status (Pass/Fail) | Comments |
+|--------------|-----------------------|----------------|------------|-----------------|---------------|-------------------|----------|
+| TC-001 | Verify application startup and menu display | Application is compiled and ready to run | 1. Start the COBOL application 2. Observe the initial menu | Application displays options 1-4 and prompts for a choice |  |  |  |
+| TC-002 | View current balance | Application is running and default data state is initialized | 1. Enter choice `1` at the menu | Application displays the current balance and returns to the menu |  |  | The initial balance should be `1000.00` based on current implementation |
+| TC-003 | Credit account with a valid amount | Application is running and balance is `1000.00` or current stored balance | 1. Enter choice `2` 2. Enter `100.00` when prompted for credit amount | Application reads the stored balance, adds the credit amount, updates storage, and displays the new balance |  |  | New balance should equal previous balance plus credit amount |
+| TC-004 | Debit account with sufficient funds | Application is running and balance is sufficient for the debit | 1. Enter choice `3` 2. Enter `100.00` when prompted for debit amount | Application reads the stored balance, subtracts the debit amount, updates storage, and displays the new balance |  |  | New balance should equal previous balance minus debit amount |
+| TC-005 | Prevent debit when insufficient funds | Application is running and current balance is less than debit request | 1. Enter choice `3` 2. Enter amount greater than current balance | Application reads the stored balance, detects insufficient funds, does not update storage, and displays an error message |  |  | Storage balance should remain unchanged |
+| TC-006 | Handle invalid menu choice | Application is running | 1. Enter a value outside `1-4`, such as `5` or `0` | Application displays `Invalid choice, please select 1-4.` and returns to the menu |  |  | Current implementation does not crash on invalid choice |
+| TC-007 | Exit application cleanly | Application is running | 1. Enter choice `4` | Application sets the continue flag to NO, displays exit message, and terminates |  |  | |
+| TC-008 | Verify data persistence within program session | Application is running and balance has changed by a prior transaction | 1. Perform a credit or debit transaction 2. Select choice `1` to view balance | Application displays the updated balance reflecting prior writes to storage |  |  | Because `DataProgram` stores balance in working storage, persistence is only within the running program session |
+| TC-009 | Validate amount input handling for credit | Application is running and choice `2` is selected | 1. Enter a non-numeric or malformed value for credit amount | The current app has no explicit validation; expected behavior is based on COBOL runtime handling and may be treated as zero or rejected |  |  | This is a known gap in current business logic; include as a stakeholder validation item |
+| TC-010 | Validate amount input handling for debit | Application is running and choice `3` is selected | 1. Enter a non-numeric or malformed value for debit amount | The current app has no explicit validation; expected behavior is based on COBOL runtime handling and may be treated as zero or rejected |  |  | This is a known gap in current business logic; include as a stakeholder validation item |
